@@ -1,5 +1,5 @@
 {
-  "name": "react-media-kit",
+  "name": "@AdeosunI/react-media-kit",
   "version": "1.0.0",
   "description": "A collection of React hooks for capturing, recording, and streaming audio and video using browser media APIs and WebRTC.",
   "keywords": [
