@@ -18,6 +18,7 @@ const useStream = () => {
   const [micIsEnabled, setMicIsEnabled] = useState(false);
   const [videoIsEnabled, setVideoIsEnabled] = useState(false);
   const streamRequestIdRef = useRef(0);
+  const deviceEnumerationRequestIdRef = useRef(0);
 
   const showStream = useCallback(
     async (nextCameraId?: string | null, nextMicId?: string | null) => {
@@ -74,10 +75,12 @@ const useStream = () => {
     [],
   );
 
-  const handleDeviceChange = useEffectEvent(async (isActive: () => boolean) => {
+  const handleDeviceChange = useEffectEvent(async () => {
+    const deviceEnumerationRequestId = ++deviceEnumerationRequestIdRef.current;
     try {
       const devices = await navigator.mediaDevices.enumerateDevices();
-      if (!isActive()) return;
+      if (deviceEnumerationRequestId !== deviceEnumerationRequestIdRef.current)
+        return;
 
       const nextCameras = devices.filter((d) => d.kind === "videoinput");
       const nextMics = devices.filter((d) => d.kind === "audioinput");
@@ -99,7 +102,9 @@ const useStream = () => {
         }
       }
     } catch {
-      if (isActive()) {
+      if (
+        deviceEnumerationRequestId === deviceEnumerationRequestIdRef.current
+      ) {
         setErrorMessage("Could not read the available media devices.");
       }
     }
@@ -110,23 +115,19 @@ const useStream = () => {
       const stream = await showStream();
       if (!stream) return;
 
-      if (!isActive) {
-        stream.getTracks().forEach((track) => track.stop());
-        return;
-      }
-
-      handleDeviceChange(() => isActive);
+      handleDeviceChange();
     }
 
     const handler = () => {
-      handleDeviceChange(() => isActive);
+      handleDeviceChange();
     };
 
     void initialize();
     navigator.mediaDevices.addEventListener("devicechange", handler);
 
     return () => {
-      isActive = true;
+      streamRequestIdRef.current++;
+      deviceEnumerationRequestIdRef.current++;
       streamRef.current?.getTracks().forEach((track) => track.stop());
       navigator.mediaDevices.removeEventListener("devicechange", handler);
     };
