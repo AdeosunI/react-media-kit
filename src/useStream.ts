@@ -17,11 +17,15 @@ const useStream = () => {
   const streamRef = useRef<MediaStream | null>(null);
   const [micIsEnabled, setMicIsEnabled] = useState(false);
   const [videoIsEnabled, setVideoIsEnabled] = useState(false);
+  const streamRequestIdRef = useRef(0);
 
   const showStream = useCallback(
     async (nextCameraId?: string | null, nextMicId?: string | null) => {
+      const streamRequestId = ++streamRequestIdRef.current;
       try {
         streamRef.current?.getTracks().forEach((track) => track.stop());
+        streamRef.current = null;
+
         setVideoIsEnabled(false);
         setMicIsEnabled(false);
         setStreamIsLive(false);
@@ -37,6 +41,11 @@ const useStream = () => {
           video: nextCameraId ? { deviceId: { exact: nextCameraId } } : true,
           audio: nextMicId ? { deviceId: { exact: nextMicId } } : true,
         });
+
+        if (streamRequestId !== streamRequestIdRef.current) {
+          nextStream.getTracks().forEach((track) => track.stop());
+          return;
+        }
 
         streamRef.current = nextStream;
         if (videoRef.current) videoRef.current.srcObject = nextStream;
@@ -54,6 +63,9 @@ const useStream = () => {
 
         return nextStream;
       } catch (error) {
+        if (streamRequestId !== streamRequestIdRef.current) {
+          return;
+        }
         console.error("Could not access media devices.", error);
         setErrorMessage("Could not access the selected camera or microphone.");
         return null;
@@ -94,8 +106,6 @@ const useStream = () => {
   });
 
   useEffect(() => {
-    let isActive = false;
-
     async function initialize() {
       const stream = await showStream();
       if (!stream) return;
