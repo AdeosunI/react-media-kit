@@ -13,6 +13,10 @@
   ],
   "license": "MIT",
   "author": "Ibrahim Adeosun",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AdeosunI/react-media-kit.git"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
