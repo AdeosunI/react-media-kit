@@ -1,5 +1,5 @@
 {
-  "name": "@AdeosunI/react-media-kit",
+  "name": "@adeosuni/react-media-kit",
   "version": "1.0.0",
   "description": "A collection of React hooks for capturing, recording, and streaming audio and video using browser media APIs and WebRTC.",
   "keywords": [
@@ -31,6 +31,7 @@
   "scripts": {
     "build": "tsup",
     "prepack": "npm run build",
+    "test": "npm run typecheck",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
@@ -41,5 +42,8 @@
     "react": "^19.0.0",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3"
+  },
+  "publishConfig": {
+    "@adeosuni:registry": "https://npm.pkg.github.com"
   }
 }
