@@ -1,0 +1,21 @@
+{
+  "name": "react-media-kit",
+  "version": "1.0.0",
+  "description": "A collection of React hooks for capturing, recording, and streaming audio and video using browser media APIs and WebRTC.",
+  "keywords": [
+    "react",
+    "typescript",
+    "media",
+    "camera",
+    "microphone",
+    "recording",
+    "webrtc"
+  ],
+  "license": "ISC",
+  "author": "Ibrahim Adeosun",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

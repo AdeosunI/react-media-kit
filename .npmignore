@@ -1,0 +1,30 @@
+
+# Source files
+src/
+*.ts
+!*.d.ts
+
+# Development dependencies and configuration
+node_modules/
+tsconfig.json
+tsconfig.*.json
+
+# Tests
+**/*.test.*
+**/*.spec.*
+__tests__/
+coverage/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+
+# Git files
+.git/
+.gitignore
+.github/
+
+# Logs
+*.log
+npm-debug.log*
