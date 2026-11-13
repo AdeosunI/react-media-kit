@@ -1,9 +1,3 @@
-
-# Source files
-src/
-*.ts
-!*.d.ts
-
 # Development dependencies and configuration
 node_modules/
 tsconfig.json
