@@ -15,8 +15,8 @@ function App() {
     micIsEnabled,
     videoIsEnabled,
     streamIsLive,
-    handleCameraChange,
-    handleMicChange,
+    handleCameraChangeById,
+    handleMicChangeById,
     toggleCamera,
     toggleMicrophone,
   } = useStream();
@@ -53,14 +53,14 @@ function App() {
       <div className="device-selectors">
         <Selector
           id={cameraId}
-          onChange={(event) => handleCameraChange(event.target.value)}
+          onChange={(event) => handleCameraChangeById(event.target.value)}
           devices={cameras}
           type="Camera"
         />
 
         <Selector
           id={micId}
-          onChange={(event) => handleMicChange(event.target.value)}
+          onChange={(event) => handleMicChangeById(event.target.value)}
           devices={mics}
           type="Microphone"
         />
