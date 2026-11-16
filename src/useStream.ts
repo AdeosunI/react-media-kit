@@ -162,7 +162,7 @@ const useStream = () => {
     nextMicId: string,
     match: keyof ConstrainDOMStringParameters = "ideal",
   ) {
-    handleCameraChange({ deviceId: { [match]: nextMicId } });
+    handleMicChange({ deviceId: { [match]: nextMicId } });
   }
 
   const toggleCamera = useCallback(() => {
