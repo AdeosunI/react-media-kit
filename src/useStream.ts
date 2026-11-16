@@ -21,8 +21,11 @@ const useStream = () => {
   const deviceEnumerationRequestIdRef = useRef(0);
 
   const showStream = useCallback(
-    async (nextCameraId?: string | null, nextMicId?: string | null) => {
+    async (constraints: MediaStreamConstraints) => {
+      const nextCameraId = getDeviceIdFromConstraints(constraints, "video");
+      const nextMicId = getDeviceIdFromConstraints(constraints, "audio");
       const streamRequestId = ++streamRequestIdRef.current;
+
       try {
         streamRef.current?.getTracks().forEach((track) => track.stop());
         streamRef.current = null;
@@ -31,17 +34,11 @@ const useStream = () => {
         setMicIsEnabled(false);
         setStreamIsLive(false);
 
-        if (nextCameraId) {
-          setCameraId(nextCameraId);
-        }
-        if (nextMicId) {
-          setMicId(nextMicId);
-        }
+        setCameraId(nextCameraId);
+        setMicId(nextMicId);
 
-        const nextStream = await navigator.mediaDevices.getUserMedia({
-          video: nextCameraId ? { deviceId: { exact: nextCameraId } } : true,
-          audio: nextMicId ? { deviceId: { exact: nextMicId } } : true,
-        });
+        const nextStream =
+          await navigator.mediaDevices.getUserMedia(constraints);
 
         if (streamRequestId !== streamRequestIdRef.current) {
           nextStream.getTracks().forEach((track) => track.stop());
@@ -98,7 +95,10 @@ const useStream = () => {
 
       if (nextCameraId !== cameraId || nextMicId !== micId) {
         if (nextCameraId && nextMicId) {
-          await showStream(nextCameraId, nextMicId);
+          await showStream({
+            video: { deviceId: { exact: nextCameraId } },
+            audio: { deviceId: { exact: nextMicId } },
+          });
         }
       }
     } catch {
@@ -112,7 +112,7 @@ const useStream = () => {
 
   useEffect(() => {
     async function initialize() {
-      const stream = await showStream();
+      const stream = await showStream({ video: true, audio: true });
       if (!stream) return;
 
       handleDeviceChange();
@@ -133,12 +133,22 @@ const useStream = () => {
     };
   }, [showStream]);
 
-  function handleCameraChange(nextCameraId: string) {
-    showStream(nextCameraId, micId);
+  function handleCameraChange(
+    cameraConstraints: NonNullable<MediaStreamConstraints["video"]>,
+  ) {
+    showStream({
+      video: cameraConstraints,
+      audio: micId !== null ? { deviceId: { exact: micId } } : false,
+    });
   }
 
-  function handleMicChange(nextMicId: string) {
-    showStream(cameraId, nextMicId);
+  function handleMicChange(
+    micConstraints: NonNullable<MediaStreamConstraints["audio"]>,
+  ) {
+    showStream({
+      video: cameraId !== null ? { deviceId: { exact: cameraId } } : false,
+      audio: micConstraints,
+    });
   }
 
   const toggleCamera = useCallback(() => {
@@ -180,3 +190,22 @@ const useStream = () => {
 };
 
 export default useStream;
+
+const getDeviceIdFromConstraints = (
+  constraints: MediaStreamConstraints,
+  kind: "audio" | "video",
+): string | null => {
+  if (typeof constraints[kind] === "object") {
+    if (typeof constraints[kind].deviceId === "string") {
+      return constraints[kind].deviceId;
+    }
+    if (
+      typeof constraints[kind].deviceId === "object" &&
+      "ideal" in constraints[kind].deviceId &&
+      typeof constraints[kind].deviceId.ideal === "string"
+    ) {
+      return constraints[kind].deviceId.ideal;
+    }
+  }
+  return null;
+};
