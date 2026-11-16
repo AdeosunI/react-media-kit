@@ -151,6 +151,20 @@ const useStream = () => {
     });
   }
 
+  function handleCameraChangeById(
+    nextCameraId: string,
+    match: keyof ConstrainDOMStringParameters = "ideal",
+  ) {
+    handleCameraChange({ deviceId: { [match]: nextCameraId } });
+  }
+
+  function handleMicChangeById(
+    nextMicId: string,
+    match: keyof ConstrainDOMStringParameters = "ideal",
+  ) {
+    handleCameraChange({ deviceId: { [match]: nextMicId } });
+  }
+
   const toggleCamera = useCallback(() => {
     if (streamRef.current) {
       const videoTracks = streamRef.current.getVideoTracks();
@@ -186,6 +200,8 @@ const useStream = () => {
     handleMicChange,
     toggleCamera,
     toggleMicrophone,
+    handleCameraChangeById,
+    handleMicChangeById,
   };
 };
 
