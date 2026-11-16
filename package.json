@@ -50,6 +50,7 @@
     "examples/*"
   ],
   "files": [
-    "dist"
+    "dist",
+    "src"
   ]
 }
