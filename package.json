@@ -45,5 +45,12 @@
   },
   "publishConfig": {
     "@adeosuni:registry": "https://npm.pkg.github.com"
-  }
+  },
+  "workspaces": [
+    "examples/*"
+  ],
+  "files": [
+    "dist",
+    "src"
+  ]
 }
