@@ -9,6 +9,8 @@ A browser-based example and showcase for [`@adeosuni/react-media-kit`](https://g
 
 ## Run locally
 
+Already cloned the repository? Skip step 1. Already installed dependencies from the repository root? Skip step 2.
+
 1. Clone the repository and open its root directory.
 2. Install dependencies:
 
