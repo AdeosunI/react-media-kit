@@ -1,5 +1,7 @@
 # Recorder Demo
 
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/AdeosunI/react-media-kit?file=examples%2Frecorder-demo%2Fsrc%2FApp.tsx&startScript=recorder-demo)
+
 A browser-based example and showcase for [`@adeosuni/react-media-kit`](https://github.com/AdeosunI/react-media-kit), demonstrating how to capture, preview, control, and record audio and video streams. Choose a camera and microphone, preview the live stream, toggle either device, and record the stream to a video file.
 
 ## Requirements
