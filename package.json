@@ -32,7 +32,8 @@
     "build": "tsup",
     "prepack": "npm run build",
     "test": "npm run typecheck",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "recorder-demo": "npm run dev -w recorder-demo"
   },
   "peerDependencies": {
     "react": ">=19.2.0"
