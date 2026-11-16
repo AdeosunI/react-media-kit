@@ -153,14 +153,14 @@ const useStream = () => {
 
   function handleCameraChangeById(
     nextCameraId: string,
-    match: keyof ConstrainDOMStringParameters = "ideal",
+    match: keyof ConstrainDOMStringParameters = "exact",
   ) {
     handleCameraChange({ deviceId: { [match]: nextCameraId } });
   }
 
   function handleMicChangeById(
     nextMicId: string,
-    match: keyof ConstrainDOMStringParameters = "ideal",
+    match: keyof ConstrainDOMStringParameters = "exact",
   ) {
     handleMicChange({ deviceId: { [match]: nextMicId } });
   }
