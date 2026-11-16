@@ -1,6 +1,6 @@
-# VOIP App
+# Recorder Demo
 
-A browser-based audio and video recorder. Choose a camera and microphone, preview the live stream, toggle either device, and record the stream to a video file.
+A browser-based example and showcase for [`@adeosuni/react-media-kit`](https://github.com/AdeosunI/react-media-kit), demonstrating how to capture, preview, control, and record audio and video streams. Choose a camera and microphone, preview the live stream, toggle either device, and record the stream to a video file.
 
 ## Requirements
 
@@ -9,17 +9,19 @@ A browser-based audio and video recorder. Choose a camera and microphone, previe
 
 ## Run locally
 
-1. Clone the repository and open the project directory.
+1. Clone the repository and open its root directory.
 2. Install dependencies:
 
    ```bash
    npm install
    ```
 
-3. Start the Vite development server:
+3. Start the recorder demo's Vite development server from the repository root:
 
    ```bash
-   npm run dev
+   npm run dev --workspace=recorder-demo
+   # Shorthand:
+   npm run dev -w recorder-demo
    ```
 
 4. Open the local URL printed in the terminal (usually `http://localhost:5173`).
@@ -30,7 +32,7 @@ Use the device selectors to choose your camera and microphone. Select **Record**
 ## Other commands
 
 ```bash
-npm run build    # Type-check and create a production build in dist/
-npm run preview  # Serve the production build locally
-npm run lint     # Run ESLint
+npm run build -w recorder-demo    # Type-check and create a production build
+npm run preview -w recorder-demo  # Serve the production build locally
+npm run lint -w recorder-demo     # Run ESLint
 ```
