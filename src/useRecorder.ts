@@ -5,7 +5,6 @@ import {
   useState,
   type RefObject,
 } from "react";
-import { handleDownload } from "./utils/helpers.js";
 
 const useRecorder = (streamRef: RefObject<MediaStream | null>) => {
   const [isRecording, setIsRecording] = useState(false);
@@ -20,37 +19,55 @@ const useRecorder = (streamRef: RefObject<MediaStream | null>) => {
     };
   }, []);
 
-  const startRecording = useCallback(() => {
-    mediaRecorderRef.current = new MediaRecorder(streamRef.current!);
-    chunks.current = [];
-    mediaRecorderRef.current.ondataavailable = (e) => {
-      chunks.current.push(e.data);
-    };
+  const startRecording = useCallback(
+    (callback?: (blob: Blob) => void) => {
+      if (!streamRef.current) return;
+      mediaRecorderRef.current = new MediaRecorder(streamRef.current!);
+      chunks.current = [];
+      mediaRecorderRef.current.ondataavailable = (e) => {
+        chunks.current.push(e.data);
+      };
 
-    mediaRecorderRef.current.onstop = () => {
-      setIsRecording(false);
-      const blob = new Blob(chunks.current, {
-        type: mediaRecorderRef.current!.mimeType,
-      });
-      handleDownload(blob, "recording.webm");
-    };
+      mediaRecorderRef.current.onstop = () => {
+        setIsRecording(false);
+        const blob = new Blob(chunks.current, {
+          type: mediaRecorderRef.current!.mimeType,
+        });
+        if (callback) {
+          callback(blob);
+        }
+      };
 
-    mediaRecorderRef.current.onstart = () => {};
+      mediaRecorderRef.current.onstart = () => {};
 
-    mediaRecorderRef.current.start();
+      mediaRecorderRef.current.start();
 
-    setIsRecording(true);
-  }, [streamRef]);
+      setIsRecording(true);
+    },
+    [streamRef],
+  );
 
   const stopRecording = useCallback(() => {
+    if (!streamRef.current) return;
     mediaRecorderRef.current?.stop();
-  }, []);
+  }, [streamRef]);
+
+  const toggleRecording = useCallback(
+    (callback?: (blob: Blob) => void) => {
+      if (!streamRef.current) return;
+      if (!isRecording) {
+        startRecording(callback);
+      } else {
+        stopRecording();
+      }
+    },
+    [isRecording, startRecording, stopRecording, streamRef],
+  );
 
   void streamRef;
   return {
     isRecording,
-    startRecording,
-    stopRecording,
+    toggleRecording,
   };
 };
 

@@ -2,6 +2,7 @@ import "./App.css";
 import { useRecorder, useStream } from "@adeosuni/react-media-kit";
 import Selector from "./components/Selector";
 import VideoPlayer from "./components/VideoPlayer";
+import handleDownload from "./utils/handleDownload";
 
 function App() {
   const {
@@ -21,7 +22,7 @@ function App() {
     toggleMicrophone,
   } = useStream();
 
-  const { isRecording, startRecording, stopRecording } = useRecorder(streamRef);
+  const { isRecording, toggleRecording } = useRecorder(streamRef);
 
   return (
     <main className="device-console">
@@ -31,11 +32,9 @@ function App() {
           className={`record-button ${isRecording ? "is-recording" : ""}`}
           disabled={!streamIsLive}
           onClick={() => {
-            if (isRecording) {
-              stopRecording();
-            } else {
-              startRecording();
-            }
+            toggleRecording((blob) => {
+              handleDownload(blob, "recording.webm");
+            });
           }}
         >
           {isRecording ? "Stop Recording" : "Record"}

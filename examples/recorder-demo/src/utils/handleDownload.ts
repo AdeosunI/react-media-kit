@@ -1,4 +1,4 @@
-export const handleDownload = (data: Blob, suggestedName: string) => {
+const handleDownload = (data: Blob, suggestedName: string) => {
   const url = URL.createObjectURL(data);
   const link = document.createElement("a");
 
@@ -8,3 +8,5 @@ export const handleDownload = (data: Blob, suggestedName: string) => {
 
   URL.revokeObjectURL(url);
 };
+
+export default handleDownload;
