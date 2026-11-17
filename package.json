@@ -33,16 +33,23 @@
     "prepack": "npm run build",
     "test": "npm run typecheck",
     "typecheck": "tsc --noEmit",
-    "recorder-demo": "npm run dev -w recorder-demo"
+    "recorder-demo": "npm run dev -w recorder-demo",
+    "lint": "eslint ."
   },
   "peerDependencies": {
     "react": ">=19.2.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/react": "^19.0.0",
+    "eslint": "^10.15.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.8",
+    "globals": "^17.14.0",
     "react": "^19.2.0",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.73.0"
   },
   "publishConfig": {
     "@adeosuni:registry": "https://npm.pkg.github.com"
